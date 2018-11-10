@@ -1,0 +1,6 @@
+[Unit]
+Description=FakeSMTP Script
+
+[Service]
+ExecStart=/usr/local/bin/nitmo_fakesmtp.sh
+StandardInput=socket

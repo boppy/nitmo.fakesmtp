@@ -1,0 +1,9 @@
+[Unit]
+Description=FakeSMTP Mail-Receiver
+
+[Socket]
+ListenStream=127.0.0.1:2525
+Accept=yes
+
+[Install]
+WantedBy=sockets.target
