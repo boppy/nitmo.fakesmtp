@@ -21,26 +21,26 @@ The nitmo fakeSMTP is therefore written totally in bash with only using (1) bina
 * Make the `nitmo_fakesmtp.sh` executable (`chmod +x nitmo_fakesmtp.sh`) and remember its path (`/usr/local/bin` or `/usr/local/sbin` might be a good place if you do not want to remember the path).
 * Make the script listen to a port
   * With **systemd** (recommended)
-    * Copy [nitmo_fakesmtp.socket](nitmo_fakesmtp.socket) and [nitmo_fakesmtp@.service](nitmo_fakesmtp@.service) to `/etc/systemd/system`
-    * Change the **ExecStart** in `nitmo_fakesmtp@.service` to the correct path of your executable (skip this if the path is inside `$PATH`)
-    * Change the **ListenStream** in `nitmo_fakesmtp.socket` to the port your want your fakeSMTP to listen to (skip this if port 2525 is okay for you). **WARNING**: *Do not remove* the `127.0.0.1` part since the fakeSMTP would then be open to connections from the internet!
-    * Enable the socket with `systemctl enable nitmo_fakeSMTP.socket`
+    * Copy [fakeSMTP.socket](fakeSMTP.socket) and [fakeSMTP@.service](fakeSMTP@.service) to `/etc/systemd/system`
+    * Change the **ExecStart** in `fakeSMTP@.service` to the correct path of your executable (skip this if the path is inside `$PATH`)
+    * Change the **ListenStream** in `fakeSMTP.socket` to the port your want your fakeSMTP to listen to (skip this if port 2525 is okay for you). **WARNING**: *Do not remove* the `127.0.0.1` part since the fakeSMTP would then be open to connections from the internet!
+    * Enable the socket with `systemctl enable fakeSMTP.socket`
 
-  * With **inetd** (not tested, ***creates open relay if used unaltered!!!***)
+  * With **inetd** (not tested, ***creates open relay if used unaltered!!!*** )
     * Add the following line to your `/etc/inetd.conf`:
-    * `2525   stream    tcp    nowait    root    /path/to/fakeSMTP.php`
+    * `2525   stream    tcp    nowait    root    /path/to/nitmo_fakesmtp.sh`
     * **Take security steps because inetd cannot (by default) limit connections by itself. See tcpd or similar to protect against installing an open relay!**
     * Sharing your installation steps by providing an issue or pull request is greatly appreciated.
   
-  * With **xinetd** (not tested, ***creates open relay if used unaltered!!!***)
+  * With **xinetd** (not tested, ***creates open relay if used unaltered!!!*** )
     * Convert the inetd example with `xconv.pl` (previously `itox`) that should be provided with xinetd:
-    * `xconv.pl <<< "2525   stream    tcp    nowait    root    /path/to/fakeSMTP.php" > monit_fakeSMTP.xinetd`
+    * `xconv.pl <<< "2525   stream    tcp    nowait    root    /path/to/nitmo_fakesmtp.sh" > monit_fakeSMTP.xinetd`
     * **Take security steps because this config does not limit connections. See tcpd or similar to protect against installing an open relay!**
     * Sharing your installation steps by providing an issue or pull request is greatly appreciated.
 
 ## Notification examples
 
-The `receiver.sh` includes examples on calling binaries.
+The `nitmo_fakesmtp.sh` includes examples on calling binaries.
 
 * *Be aware* that the script `trim`s the lines. So any `\r|^M` will be removed. If you like to forward to email (ie. `sendmail`) your have to add `\r` at least to the header lines!
 * An example of dropping mails is included
