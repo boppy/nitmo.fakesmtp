@@ -145,3 +145,4 @@ while true; do
         fi
     fi
 done
+exit 0
