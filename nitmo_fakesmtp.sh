@@ -26,7 +26,7 @@ sender(){
     fi
 
     # Set TO host to include @drop or +drop to not do any further. Ex: test@log+drop / hello_world@drop.de.vu
-    ([[ "$to" == *@drop* ]] || [[ "$to" == *+drop* ]]) && exit
+    ([[ "$to" == *@drop* ]] || [[ "$to" == *+drop* ]]) && return
     
     
     # Send Message using the telegram-send installed from pip
